@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+    <h4>Posts published by you</h4>
+    {% for i in post %}
+    <h4>{{i.Name | title}}</h4>
+    {% endfor %}
+
+{% endblock %}

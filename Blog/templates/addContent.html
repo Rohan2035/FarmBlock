@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Add Content{% endblock %}
+
+{% block head %}
+
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script>
+    tinymce.init({
+        selector: '#post',
+        height: 656,
+        plugins: [
+            'advlist autolink link image lists charmap print preview hr anchor pagebreak',
+            'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+            'table emoticons template paste help'
+        ],
+        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
+            'bullist numlist outdent indent | link image | print preview media fullpage | ' +
+            'forecolor backcolor emoticons | help',
+        menu: {
+            favs: { title: 'My Favorites', items: 'code visualaid | searchreplace | emoticons' }
+        },
+        menubar: 'favs file edit view insert format tools table help',
+        content_css: 'css/content.css'
+    });
+
+</script>
+
+<link rel="stylesheet" href="{% static 'CSS/sheet2.css' %}">
+
+{% endblock %}
+
+
+{% block body %}
+
+<div class="container">
+    <h2 align="center">ADD A POST</h2>
+
+    <div class="d-flex">
+        <form method="post" action="/validate/" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="myBox">
+                <!-- Adding a post  -->
+                <div class="form-group">
+                    <label for="name">Post Name:</label>
+                    <input type="name" class="form-control" id="name" name="name" placeholder="Name of the post">
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="myBox">
+                <div class="form-group">
+                    <label for="cat">Category: </label>
+                    <input type="name" class="form-control" id="cat" name="cat" placeholder="Enter category">
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="myBox">
+                <div class="form-group">
+                    <label for="post">Post: </label>
+                    <textarea class="form-control" id="post" name="post" rows="10"></textarea>
+                </div>
+            </div>
+
+            <div class="myBox">
+                <div class="form-group mt-2">
+                    <label for="date">Date: </label>
+                    <input type="date" class="form-control" name="date" id="date">
+                </div>
+            </div>
+
+            <div class="myBox">
+                <div class="form-group mt-1">
+                    <label for="post">Image: </label>
+                    <input type="file" name="photo">
+                </div>
+            </div>
+
+
+
+            <button type="submit" class="btn btn-danger">Submit</button>
+        </form>
+    </div>
+
+    <br>
+</div>
+
+{% endblock %}

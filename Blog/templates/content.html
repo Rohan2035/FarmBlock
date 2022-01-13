@@ -1,0 +1,310 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'CSS/sheet3.css' %}">
+
+    <title>{{post.Name | title}}</title>
+
+    <style>
+
+        /* Adding media query for all the Images */
+        @media (max-width: 768px) {
+            img {
+                width: 70%;
+            }
+        }
+
+        @media (max-width : 768px) {
+            #mImg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+        <a class="navbar-brand" href="http://127.0.0.1:8000/">FarmBlock</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:8000/displayall/">Posts</a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:8000/contact/">Contact Us</a>
+                </li>
+
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-expanded="false">
+                        Welcome {{request.user}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/logout/">Log-out</a>
+                        <a class="dropdown-item" href="/addContent/">Add Posts</a>
+                        <a class="dropdown-item" href="/userposts/">View Your posts</a>
+                    </div>
+                </li>
+
+
+                {% else %}
+                <li class="nav-item">
+                    <!-- Button to trigger Sign-up modal -->
+                    <!-- <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+              Sign-Up
+            </button> -->
+                    <a class="nav-link" href="#" data-target="#signUp" data-toggle="modal">Sign-up</a>
+
+                </li>
+
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-target="#logIn" data-toggle="modal">Log-in</a>
+                </li>
+
+                {% endif %}
+            </ul>
+
+        </div>
+    </nav>
+
+
+
+    <!-- SignUp Modal -->
+    <div class="modal fade" id="signUp" tabindex="-1" role="dialog" aria-labelledby="signUP" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signUp">Sign-Up Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="/signup/" method="post">
+                        {%csrf_token%}
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="name" class="form-control" id="name" placeholder="Please Enter Full Name"
+                                name="name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                                placeholder="Enter email" name="email">
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                                else.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                name="password">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword"
+                                placeholder="Confirm your Password" name="confirmPassword">
+                        </div>
+
+
+
+                        <hr>
+                        <button type="submit" class="btn btn-primary">Join Community</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- LogIn Modal -->
+    <div class="modal fade" id="logIn" tabindex="-1" role="dialog" aria-labelledby="logIn" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logIn">Log In</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="/login/" method='POST'>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp"
+                                placeholder="Enter email id" name="loginEmail">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" placeholder="Password"
+                                name="loginPassword">
+                        </div>
+
+                        <hr>
+                        <button type="submit" class="btn btn-primary">Log-In</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        <strong>
+            {{ message }}
+        </strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+
+    <!-- Main Content -->
+    <div class="border">
+        <div class="container mt-3">
+
+            <div class="card mb-3">
+                <span class="bd border">
+                    <img src="/media/{{post.img1}}" class="card-img-top" id="mImg">
+                </span>
+
+                <div class="card-body">
+                    <h2 class="card-title">{{post.Name | title}}</h2>
+                    <p class="card-text mt-2"><strong>Post by : </strong><span style="color: rgb(27, 138, 212);">{{post.author | title}}</span></p>
+                    <a href="http://127.0.0.1:8000/category/{{post.Category}}" class="card-text"><span
+                            class="badge badge-danger">{{post.Category | title}}</span></a>
+                    <p class="card-text mt-2">
+                        {{post.content | safe}}
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            {{post.date}}
+                        </small>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Category and Search Section -->
+        <section>
+            <div class="container">
+                <div class="row">
+
+                    <div class="col mt-2 mb-3">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-header">
+                                <strong>Category</strong>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><a href="http://127.0.0.1:8000/category/farming">Farming</a></li>
+                                <li class="list-group-item"><a href="http://127.0.0.1:8000/category/animal%20husbandry">Animal Husbandry</a></li>
+                                <!-- <li class="list-group-item"><a href=""></a></li> -->
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="col mt-2 mb-3">
+                        <div class="card">
+                            <div class="card-header"><strong>Search</strong></div>
+                            <div class="card-body">
+                                <div class="input-group">
+                                    <form action="/search/" method=get>
+                                        <input class="form-control" type="text" placeholder="Enter search term..."
+                                            aria-label="Enter search term..." aria-describedby="button-search" name="query" id="query"/>
+                                        <button class="btn btn-primary mt-2" id="button-search" type="submit">Go!</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Card Below the Container -->
+    <section class="bg-dark">
+        <div class="container pt-3">
+            <div class="row">
+
+                {% for i in post1 %}
+                <div class="card c" style="width: 18rem;">
+                    <img src="/media/{{i.img1}}" class="card-img-top d" alt="Image not found">
+                    <div class="card-body">
+                        <h4 class="card-title"><b>{{i.Name | title}}</b></h4>
+                        <p class="card-text" style="font-size: small;">
+                            {{i.content | safe | truncatechars:100}}
+                        </p>
+                        <a href="http://127.0.0.1:8000/content/{{i.slug}}" class=""><span class="badge badge-success">Read More</span></a>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <link rel="stylesheet" href="{% static 'CSS/footer.css' %}">
+    <footer id="footer">
+        <div class="copyrights">
+            <p id="footerText">© All rights reserved | FarmBlock</p>
+        </div>
+    </footer>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
